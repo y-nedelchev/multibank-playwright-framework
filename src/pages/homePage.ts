@@ -1,11 +1,18 @@
-import {test, expect, Page, Locator} from "@playwright/test"
+import {expect, Locator, Page} from "@playwright/test"
+import * as data from '../test-data/index'
 
 export class HomePage {
     private readonly page
-    readonly mainMenuCategories: Locator
+    readonly mainMenuCategoriesBar: Locator
+
     readonly tradeCategoryButton: Locator
     readonly tradeCategoriesTitles: Locator
     readonly tradeCategoriesDescription: Locator
+    readonly spotMainBarButton: Locator
+    readonly derivativesMainBarButton: Locator
+    readonly instantBuyMainBarButton: Locator
+    readonly panicSellMainBarButton: Locator
+    readonly convertMainBarButton: Locator
 
     readonly featureCategoryButton: Locator
     readonly featuresCategoriesTitles: Locator
@@ -13,84 +20,77 @@ export class HomePage {
 
     constructor(page: Page) {
         this.page = page
-        this.mainMenuCategories = page.locator('.style_menu-container__Ha_wV')
+        this.mainMenuCategoriesBar = page.locator('.style_menu-container__Ha_wV')
+
+        // Trade Categories
         this.tradeCategoryButton = page.locator('#trade-header-option-open-button')
         this.tradeCategoriesTitles = page.locator('.style_text__TYMU_')
         this.tradeCategoriesDescription = page.locator('.style_text__TYMU_ span')
+        this.spotMainBarButton = page.locator('.style_popover-panel__IfxFO').getByRole('link', { name: 'Spot' })
+        this.derivativesMainBarButton = page.locator('.style_popover-panel__IfxFO').getByRole('link', { name: 'Derivatives' })
+        this.instantBuyMainBarButton = page.locator('.style_popover-panel__IfxFO').getByRole('link', { name: 'Instant Buy' })
+        this.panicSellMainBarButton = page.locator('.style_popover-panel__IfxFO').getByRole('link', { name: 'Panic Sell' })
+        this.convertMainBarButton = page.locator('.style_popover-panel__IfxFO').getByRole('link', { name: 'Convert' })
 
+        //Feature Categories
         this.featureCategoryButton = page.locator('#features-header-option-open-button')
         this.featuresCategoriesTitles = page.locator('.style_text__P_cgP')
         this.featuresSubCategoriesDescription = page.locator('.style_text__P_cgP span')
+
     }
 
-    // Trade Sub categories
-    readonly mainCategoriesList: string[] = [
-        'Dashboard',
-        'Markets',
-        'Trade',
-        'Features',
-        'About Us',
-        'Support']
+    async getMainMenuCategories(): Promise<string[]> {
+        return (await this.mainMenuCategoriesBar.innerText()).split('\n')
+    }
 
-    readonly tradeSubCategoriesList: string[] = [
-        'Spot',
-        'Derivatives',
-        'Instant Buy',
-        'Panic Sell',
-        'Convert']
+    async getTradeCategories(): Promise<string[]> {
+        await this.tradeCategoryButton.hover()
+        const tradeRawTexts: string[] = await this.tradeCategoriesTitles.allInnerTexts()
+        return tradeRawTexts.map(text =>
+            text.split('\n')[0].trim()
+        )
+    }
 
-    readonly tradeSubCategoriesDescriptionList: string[] = [
-        'Trade crypto with advanced tools',
-        'Trade USDT based derivatives',
-        'Buy Crypto Instantly',
-        'Sell Assets Quickly',
-        'Quickly swap any assets'
-    ]
+    async getTradeCategoriesDescription(): Promise<string[]> {
+        return await this.tradeCategoriesDescription.allTextContents()
+    }
 
-    // Features Sub categories
-    readonly featuresSubCategoriesList: string[] = [
-        'Spot Exchange',
-        'Institutional',
-        'Buy & Sell'
-    ]
+    async getFeaturesSubCategories(): Promise<string[]> {
+        await this.featureCategoryButton.hover()
+        const featuresRawTexts: string[] = await this.featuresCategoriesTitles.allInnerTexts()
+        return featuresRawTexts.map(text =>
+            text.split('\n')[0].trim()
+        )
+    }
 
-    readonly featuresSubCategoriesDescriptionList: string[] = [
-        'Trade digital currencies',
-        'Access the full institutional package',
-        'The fastest way to buy crypto'
-    ]
+    async getFeaturesSubCategoriesDescription(): Promise<string[]> {
+        return await this.featuresSubCategoriesDescription.allTextContents()
+    }
 
     async verifyNavigationMenuCategoriesArePresent() {
         // Main categories
-        const actualCategories: string[] = (await this.mainMenuCategories.innerText()).split('\n')
-        expect(actualCategories).toEqual(this.mainCategoriesList)
+        const actualMainMenuCategories: string[] = await this.getMainMenuCategories()
+        expect(actualMainMenuCategories).toEqual(data.mainCategoriesList)
 
         // Trade Sub categories
-        await this.tradeCategoryButton.hover()
-        const tradeRawTexts: string[] = await this.tradeCategoriesTitles.allInnerTexts()
-        const actualTradeSubCategories: string[] = tradeRawTexts.map(text =>
-            text.split('\n')[0].trim()
-        )
-        expect(actualTradeSubCategories).toEqual(this.tradeSubCategoriesList)
+        const actualTradeSubCategories: string[] = await this.getTradeCategories()
+        expect(actualTradeSubCategories).toEqual(data.tradeSubCategoriesList)
 
         // Trade Sub categories description
-        const actualTradeSubCategoriesDescription: string[] = (await this.tradeCategoriesDescription.allTextContents())
-        expect(actualTradeSubCategoriesDescription).toEqual(this.tradeSubCategoriesDescriptionList)
+        const actualTradeSubCategoriesDescription: string[] = await this.getTradeCategoriesDescription()
+        expect(actualTradeSubCategoriesDescription).toEqual(data.tradeSubCategoriesDescriptionList)
 
         // Features Sub Categories
-        await this.featureCategoryButton.hover()
-        const featuresRawTexts: string[] = await this.featuresCategoriesTitles.allInnerTexts()
-        const actualFeaturesSubCategories: string[] = featuresRawTexts.map(text =>
-            text.split('\n')[0].trim()
-        )
-        expect(actualFeaturesSubCategories).toEqual(this.featuresSubCategoriesList)
+        const actualFeaturesSubCategories: string[] = await this.getFeaturesSubCategories()
+        expect(actualFeaturesSubCategories).toEqual(data.featuresSubCategoriesList)
 
         // Features Sub categories description
-        const actualFeaturesSubCategoriesDescription: string[] = (await this.featuresSubCategoriesDescription.allTextContents())
-        expect(actualFeaturesSubCategoriesDescription).toEqual(this.featuresSubCategoriesDescriptionList)
+        const actualFeaturesSubCategoriesDescription: string[] = await this.getFeaturesSubCategoriesDescription()
+        expect(actualFeaturesSubCategoriesDescription).toEqual(data.featuresSubCategoriesDescriptionList)
     }
 
-    verifyNavigationMenuCategoriesRedirectSuccessfully(){
-
+    async verifyNavigationMenuCategoriesRedirectSuccessfully(){
+        await this.tradeCategoryButton.hover()
+        await this.spotMainBarButton.click()
     }
 }

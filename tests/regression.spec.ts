@@ -28,9 +28,27 @@ test.describe.parallel('Parallel test suite', () => {
     expect(actualFeaturesSubCategoriesDescription).toEqual(data.featuresSubCategoriesDescriptionList)
   })
 
+  test('TC04 Verify About Us subcategories and descriptions', async ({ pm }) => {
+    // About Us Sub Categories
+    const actualAboutUsSubCategories: string[] = await pm.onHomePage().getAboutUsSubCategories()
+    expect(actualAboutUsSubCategories).toEqual(data.aboutUsSubCategoriesList)
 
+    // About Us Sub categories description
+    const actualAboutUsSubCategoriesDescription: string[] = await pm.onHomePage().getAboutUsSubCategoriesDescription()
+    expect(actualAboutUsSubCategoriesDescription).toEqual(data.aboutUsSubCategoriesDescriptionList)
+  })
 
-  test('TC02 Verify navigation menu categories redirect to the relevant page', async ({ pm }) => {
+  test('TC05 Verify Support subcategories and descriptions', async ({ pm }) => {
+    // Support Sub Categories
+    const actualSupportSubCategories: string[] = await pm.onHomePage().getSupportSubCategories()
+    expect(actualSupportSubCategories).toEqual(data.supportSubCategoriesList)
+
+    // Support Sub categories description
+    const actualSupportSubCategoriesDescription: string[] = await pm.onHomePage().getSupportSubCategoriesDescription()
+    expect(actualSupportSubCategoriesDescription).toEqual(data.supportSubCategoriesDescriptionList)
+  })
+
+  test('TC0 Verify navigation menu categories redirect to the relevant page', async ({ pm }) => {
     await pm.onHomePage().verifyNavigationMenuCategoriesRedirectSuccessfully()
   })
 })

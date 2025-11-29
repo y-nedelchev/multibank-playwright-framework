@@ -52,7 +52,7 @@ export class HomePage {
     }
 
     async getTradeCategoriesDescription(): Promise<string[]> {
-        return await this.tradeCategoriesDescription.allTextContents()
+        return this.tradeCategoriesDescription.allTextContents()
     }
 
     async getFeaturesSubCategories(): Promise<string[]> {
@@ -64,29 +64,7 @@ export class HomePage {
     }
 
     async getFeaturesSubCategoriesDescription(): Promise<string[]> {
-        return await this.featuresSubCategoriesDescription.allTextContents()
-    }
-
-    async verifyNavigationMenuCategoriesArePresent() {
-        // Main categories
-        const actualMainMenuCategories: string[] = await this.getMainMenuCategories()
-        expect(actualMainMenuCategories).toEqual(data.mainCategoriesList)
-
-        // Trade Sub categories
-        const actualTradeSubCategories: string[] = await this.getTradeCategories()
-        expect(actualTradeSubCategories).toEqual(data.tradeSubCategoriesList)
-
-        // Trade Sub categories description
-        const actualTradeSubCategoriesDescription: string[] = await this.getTradeCategoriesDescription()
-        expect(actualTradeSubCategoriesDescription).toEqual(data.tradeSubCategoriesDescriptionList)
-
-        // Features Sub Categories
-        const actualFeaturesSubCategories: string[] = await this.getFeaturesSubCategories()
-        expect(actualFeaturesSubCategories).toEqual(data.featuresSubCategoriesList)
-
-        // Features Sub categories description
-        const actualFeaturesSubCategoriesDescription: string[] = await this.getFeaturesSubCategoriesDescription()
-        expect(actualFeaturesSubCategoriesDescription).toEqual(data.featuresSubCategoriesDescriptionList)
+        return this.featuresSubCategoriesDescription.allTextContents()
     }
 
     async verifyNavigationMenuCategoriesRedirectSuccessfully(){

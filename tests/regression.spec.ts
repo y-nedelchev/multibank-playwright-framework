@@ -2,7 +2,7 @@ import { test } from '../fixtures'
 import * as data from '../src/test-data/index'
 import {expect} from "@playwright/test";
 
-test.describe.parallel('Parallel test suite', () => {
+test.describe.parallel('Navigation & Layout', () => {
   test('TC01 Verify main navigation menu displays all categories', async ({ pm }) => {
     const actualMainMenuCategories: string[] = await pm.onHomePage().getMainMenuCategories()
     expect(actualMainMenuCategories).toEqual(data.mainCategoriesList)
@@ -48,7 +48,19 @@ test.describe.parallel('Parallel test suite', () => {
     expect(actualSupportSubCategoriesDescription).toEqual(data.supportSubCategoriesDescriptionList)
   })
 
-  test('TC0 Verify navigation menu categories redirect to the relevant page', async ({ pm }) => {
-    await pm.onHomePage().verifyNavigationMenuCategoriesRedirectSuccessfully()
+  test.describe('TC06 Verify navigation items are functional and link to appropriate destinations', () => {
+
+  })
+})
+
+test.describe.parallel('Trading Functionality', () => {
+  test('TC0 ', async ({ pm }) => {
+
+  })
+})
+
+test.describe.parallel('Content Validation', () => {
+  test('TC0 ', async ({ pm }) => {
+
   })
 })

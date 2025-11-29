@@ -49,7 +49,13 @@ test.describe.parallel('Navigation & Layout', () => {
   })
 
   test.describe('TC06 Verify navigation items are functional and link to appropriate destinations', () => {
-
+    for(let dest of data.navDestinations) {
+      test(`Verify ${dest.subCategory} of ${dest.topCategory}`, async ({ pm }) => {
+        if(dest.topCategory === 'Dashboard' || dest.topCategory === 'Markets'){
+          await pm.onHomePage().openMainMenuCategories(dest.topCategory)
+        }
+      })
+    }
   })
 })
 

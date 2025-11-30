@@ -121,7 +121,7 @@ export class HomePage {
         return this.supportSubCategoriesDescription.allTextContents()
     }
 
-    mainMenuBar(name: string){
+    mainMenuBar(name: string): Locator{
         return this.mainMenuCategoriesBar.getByRole('link', { name })
     }
 

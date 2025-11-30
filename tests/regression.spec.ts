@@ -1,6 +1,7 @@
 import { test } from '../fixtures'
 import * as data from '../src/test-data/index'
 import {expect} from "@playwright/test";
+import {spotPairTradingData} from "../src/test-data/index";
 
 test.describe.parallel('Navigation & Layout', () => {
   test('TC01 Verify main navigation menu displays all categories', async ({ pm }) => {
@@ -69,9 +70,40 @@ test.describe.parallel('Navigation & Layout', () => {
 })
 
 test.describe.parallel('Trading Functionality', () => {
-  test('TC0 ', async ({ pm }) => {
+  for(const pair of Object.values(data.spotPairTradingData)){
+    test(`TC07 Verify Spot Trading section displays trading pairs ${pair.base}/${pair.second}`, async ({ pm, page }) => {
+      const pair = data.spotPairTradingData.btcUsdt
 
-  })
+      // As we already verified the navigation flow we could just goto /trade/ETH_USDT. Its a matter of approach.
+      await pm.onHomePage().openTradeSubCategories(data.tradeSubCategoriesList[0])
+      await Promise.all([
+        await pm.onSpotPage().findAndSelectCurrencyPair(pair.search),
+        await expect(page).toHaveURL(pair.urlSuffix),
+        await page.waitForLoadState('load')
+      ])
+
+      const expectedHeaders = [
+        `Price (${pair.second})`,
+        `Size (${pair.base})`,
+        `Total (${pair.second})`
+      ]
+      await expect(pm.onSpotPage().showAsksAndBidsButton).toBeVisible()
+      await expect(pm.onSpotPage().showBidsOnlyButton).toBeVisible()
+      await expect(pm.onSpotPage().showAsksOnlyButton).toBeVisible()
+
+      const actualHeaders = await pm.onSpotPage().getOrderBookTableHeader()
+      expect(actualHeaders).toEqual(expectedHeaders)
+
+      const lastBullish: number | null = await pm.onSpotPage().getLastBullishCandleData()
+
+      const lastBearish: number | null = await pm.onSpotPage().getLastBearishCandleData()
+      expect(lastBullish).toBeGreaterThan(1)
+
+      expect(lastBearish).toBeGreaterThan(1)
+
+    })
+  }
+
 })
 
 test.describe.parallel('Content Validation', () => {

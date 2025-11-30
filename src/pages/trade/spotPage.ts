@@ -38,8 +38,11 @@ export class SpotPage {
 
     }
     /**
-    This method is searching for a currency pair, and accepts one pair string of currency abbreviations divided with "-"
-    */
+     * Opens the trading pair search, filters by the given query
+     * and selects the first matching currency pair from the results.
+     *
+     * @param pair Trading pair identifier (for example: "BTC-USDT").
+     */
     async findAndSelectCurrencyPair(pair: string): Promise<void>{
         await this.expandSearchFieldButton.click()
         await this.searchPairsField.fill(pair)

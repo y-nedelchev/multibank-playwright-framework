@@ -2,7 +2,7 @@ import { test } from '../fixtures'
 import * as data from '../src/test-data/index'
 import {expect} from "@playwright/test";
 
-test.describe.parallel('Parallel test suite', () => {
+test.describe.parallel('Navigation & Layout', () => {
   test('TC01 Verify main navigation menu displays all categories', async ({ pm }) => {
     const actualMainMenuCategories: string[] = await pm.onHomePage().getMainMenuCategories()
     expect(actualMainMenuCategories).toEqual(data.mainCategoriesList)
@@ -48,7 +48,34 @@ test.describe.parallel('Parallel test suite', () => {
     expect(actualSupportSubCategoriesDescription).toEqual(data.supportSubCategoriesDescriptionList)
   })
 
-  test('TC0 Verify navigation menu categories redirect to the relevant page', async ({ pm }) => {
-    await pm.onHomePage().verifyNavigationMenuCategoriesRedirectSuccessfully()
+  test.describe('TC06 Verify navigation items are functional and link to appropriate destinations', () => {
+    for(let dest of data.navDestinations) {
+      test(`Verify ${dest.subCategory} of ${dest.topCategory}`, async ({ pm, page }) => {
+        if(dest.topCategory === 'Dashboard' || dest.topCategory === 'Markets'){
+          await pm.onHomePage().openMainMenuCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Trade'){
+          await pm.onHomePage().openTradeSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Features'){
+          await pm.onHomePage().openFeaturesSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'About Us'){
+          await pm.onHomePage().openAboutUsSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Support'){
+          await pm.onHomePage().openSupportSubCategories(dest.subCategory)
+        }
+        await expect(page).toHaveURL(new RegExp(dest.expectedUrlPart))
+      })
+    }
+  })
+})
+
+test.describe.parallel('Trading Functionality', () => {
+  test('TC0 ', async ({ pm }) => {
+
+  })
+})
+
+test.describe.parallel('Content Validation', () => {
+  test('TC0 ', async ({ pm }) => {
+
   })
 })

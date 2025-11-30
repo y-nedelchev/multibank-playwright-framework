@@ -1,5 +1,4 @@
-import {expect, Locator, Page} from "@playwright/test"
-import * as data from '../test-data/index'
+import {Locator, Page} from "@playwright/test"
 
 export class HomePage {
     private readonly page
@@ -122,8 +121,31 @@ export class HomePage {
         return this.supportSubCategoriesDescription.allTextContents()
     }
 
-    async verifyNavigationMenuCategoriesRedirectSuccessfully(){
+    mainMenuBar(name: string){
+        return this.mainMenuCategoriesBar.getByRole('link', { name })
+    }
+
+    async openMainMenuCategories(name: string): Promise<void> {
+        await this.mainMenuBar(name).click()
+    }
+
+    async openTradeSubCategories(name: string): Promise<void> {
         await this.tradeCategoryButton.hover()
-        await this.spotMainBarButton.click()
+        await this.tradeCategoriesTitles.filter({hasText: name}).click()
+    }
+
+    async openFeaturesSubCategories(name: string): Promise<void>{
+        await this.featureCategoryButton.hover()
+        await this.featuresCategoriesTitles.filter({hasText: name}).click()
+    }
+
+    async openAboutUsSubCategories(name: string): Promise<void>{
+        await this.aboutUsCategoryButton.hover()
+        await this.aboutUsSubCategories.filter({hasText: name}).click()
+    }
+
+    async openSupportSubCategories(name: string): Promise<void>{
+        await this.supportCategoriesButton.hover()
+        await this.supportCategoriesButton.filter({hasText: name}).click()
     }
 }

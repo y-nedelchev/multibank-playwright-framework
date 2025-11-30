@@ -50,10 +50,19 @@ test.describe.parallel('Navigation & Layout', () => {
 
   test.describe('TC06 Verify navigation items are functional and link to appropriate destinations', () => {
     for(let dest of data.navDestinations) {
-      test(`Verify ${dest.subCategory} of ${dest.topCategory}`, async ({ pm }) => {
+      test(`Verify ${dest.subCategory} of ${dest.topCategory}`, async ({ pm, page }) => {
         if(dest.topCategory === 'Dashboard' || dest.topCategory === 'Markets'){
-          await pm.onHomePage().openMainMenuCategories(dest.topCategory)
+          await pm.onHomePage().openMainMenuCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Trade'){
+          await pm.onHomePage().openTradeSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Features'){
+          await pm.onHomePage().openFeaturesSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'About Us'){
+          await pm.onHomePage().openAboutUsSubCategories(dest.subCategory)
+        } else if(dest.topCategory === 'Support'){
+          await pm.onHomePage().openSupportSubCategories(dest.subCategory)
         }
+        await expect(page).toHaveURL(new RegExp(dest.expectedUrlPart))
       })
     }
   })

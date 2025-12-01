@@ -1,4 +1,4 @@
-import {Locator, Page} from "@playwright/test"
+import {expect, Locator, Page} from "@playwright/test"
 
 export class HomePage {
     private readonly page
@@ -29,6 +29,17 @@ export class HomePage {
     readonly supportSubCategoriesButton: Locator
     readonly supportSubCategoriesDescription: Locator
 
+    // Marketing Banners
+    readonly unlockThePowerBanner: Locator
+    readonly depositUsingCardBanner: Locator
+    readonly contactCustomerSupportBanner: Locator
+    readonly heavyRegulatedBanner: Locator
+    readonly bannerLeftArrowButton: Locator
+    readonly bannerText: Locator
+
+    // Download URLs
+    readonly downloadUrl: Locator
+
     constructor(page: Page) {
         this.page = page
         this.mainMenuCategoriesBar = page.locator('.style_menu-container__Ha_wV')
@@ -58,7 +69,16 @@ export class HomePage {
         this.supportSubCategoriesButton = page.locator('.style_trade-link__jtY3X')
         this.supportSubCategoriesDescription = page.locator('.style_trade-link__jtY3X span')
 
+        // Marketing Banners
+        this.unlockThePowerBanner = page.locator('.slick-list [data-index="1"]')
+        this.depositUsingCardBanner = page.locator('.slick-list [data-index="2"]')
+        this.contactCustomerSupportBanner = page.locator('.slick-list [data-index="3"]')
+        this.heavyRegulatedBanner = page.locator('.slick-list [data-index="4"]')
+        this.bannerLeftArrowButton = page.locator('.style_wrapper__ag9kn .style_secondary__kmZUZ')
+        this.bannerText = page.locator('.style_title__g8VH0')
 
+        // Download URLs
+        this.downloadUrl = page.locator('.style_buttons-container__9n_JQ a')
     }
 
     async getMainMenuCategories(): Promise<string[]> {
@@ -147,5 +167,32 @@ export class HomePage {
     async openSupportSubCategories(name: string): Promise<void>{
         await this.supportCategoriesButton.hover()
         await this.supportCategoriesButton.filter({hasText: name}).click()
+    }
+
+    async getBannerText(banner: Locator): Promise<string> {
+        const text: string = await banner.locator(this.bannerText).innerText()
+        return text.replace(/"/g, '').replace(/\s+/g, ' ').trim()
+    }
+
+    async switchToNextMarketingBanner(banner: Locator): Promise<void> {
+        for(let i = 0; i < 5; i++){
+            if(await banner.isVisible())
+                return
+            await this.bannerLeftArrowButton.click()
+        }
+        throw new Error('Banner is not visible after rotating the entire carousel')
+    }
+
+    async visitBannerRedirectionUrl(banner: Locator, bannerRedirectionButton: string): Promise<void> {
+        await banner.getByText(bannerRedirectionButton).click()
+    }
+
+    async assertExternalLinkOpensCorrectUrl(urlToClick: Locator, expectedUrl: string): Promise<void> {
+        const [popup] = await Promise.all([
+            this.page.waitForEvent('popup'),
+            urlToClick.click()
+        ])
+        await expect(popup).toHaveURL(expectedUrl)
+        await popup.close()
     }
 }

@@ -107,7 +107,34 @@ test.describe.parallel('Trading Functionality', () => {
 })
 
 test.describe.parallel('Content Validation', () => {
-  test('TC0 ', async ({ pm }) => {
-
+  test('TC08 ', async ({ pm, page }) => {
+    for(const banner of data.bannerConfigs(pm.onHomePage())){
+      const bannerText = await pm.onHomePage().getBannerText(banner.locator)
+      await pm.onHomePage().switchToNextMarketingBanner(banner.locator)
+      expect(bannerText).toEqual(banner.expectedText)
+      await pm.onHomePage().visitBannerRedirectionUrl(banner.locator, banner.expectedRedirectionText)
+      await expect(page).toHaveURL(new RegExp(banner.expectedUrlPart))
+      await page.goto('/')
+    }
   })
+
+  test('TC09 Verify download section links correctly to App Store and Google Play', async ({ pm, page }) => {
+    const urls = pm.onHomePage().downloadUrl
+    await expect(urls).toHaveCount(2)
+
+    const appStoreUrl = urls.nth(0)
+    const googlePlayUrl = urls.nth(1)
+
+    await expect(appStoreUrl).toHaveAttribute('href', data.connectionUrl.appStore)
+    await expect(googlePlayUrl).toHaveAttribute('href', data.connectionUrl.googlePlay)
+
+    const targets = [
+      {urlToClick: appStoreUrl, expectedUrl: data.connectionUrl.appStore},
+      {urlToClick: googlePlayUrl, expectedUrl: data.connectionUrl.googlePlay}
+    ]
+    for (const { urlToClick, expectedUrl } of targets) {
+      await pm.onHomePage().assertExternalLinkOpensCorrectUrl(urlToClick, expectedUrl)
+    }
+  })
+
 })

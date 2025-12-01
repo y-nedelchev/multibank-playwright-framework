@@ -1,7 +1,7 @@
 import { test } from '../fixtures'
 import * as data from '../src/test-data/index'
 import {expect} from "@playwright/test";
-import {spotPairTradingData} from "../src/test-data/index";
+import {aboutUsSubCategoriesList, spotPairTradingData} from "../src/test-data/index";
 
 test.describe.parallel('Navigation & Layout', () => {
   test('TC01 Verify main navigation menu displays all categories', async ({ pm }) => {
@@ -135,6 +135,19 @@ test.describe.parallel('Content Validation', () => {
     for (const { urlToClick, expectedUrl } of targets) {
       await pm.onHomePage().assertExternalLinkOpensCorrectUrl(urlToClick, expectedUrl)
     }
+  })
+
+  test('TC10 Verify About Us page renders all expected components with correct text', async ({ pm }) => {
+    await pm.onHomePage().openAboutUsSubCategories(data.aboutUsSubCategoriesList[0])
+
+    await pm.onWhyMultibankPage().assertHero(data.whyMultiBankHeroConfig)
+    await pm.onWhyMultibankPage().assertValueCards(data.whyMultiBankCardsConfig)
+    await pm.onWhyMultibankPage().assertStatsAndBenefits(
+        data.whyMultiBankStatsHeadings,
+        data.whyMultiBankBackgroundSnippets,
+        data.whyMultiBankExtraBenefitsSnippets
+    )
+    await pm.onWhyMultibankPage().assertCompliance(data.whyMultiBankComplianceConfig)
   })
 
 })

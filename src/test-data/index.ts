@@ -1,3 +1,5 @@
 export * from './mainMenuData'
 export * from './navigationData'
 export * from './spotPairTradingData'
+export * from './bannerConfigData'
+export * from './outsideConnections'

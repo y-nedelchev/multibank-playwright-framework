@@ -288,7 +288,7 @@ character appears in a string and outputs the result in order of first appearanc
 
 ### Assumptions
 
-- **Case-insensitive**: the input string is converted to lowercase, so `H` and `h`
+- **Case-sensitive**: the input string is not converted to lowercase, so `H` and `h`
   are treated as the same character.
 - **Whitespace is ignored**: spaces, tabs and newlines are removed before counting.
 - **All other characters are counted**: letters, digits and symbols are treated as

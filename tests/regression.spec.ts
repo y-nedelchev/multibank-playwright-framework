@@ -107,7 +107,7 @@ test.describe.parallel('Trading Functionality', () => {
 })
 
 test.describe.parallel('Content Validation', () => {
-  test('TC08 ', async ({ pm, page }) => {
+  test('TC08 Verify marketing banners appear at the page bottom', async ({ pm, page }) => {
     for(const banner of data.bannerConfigs(pm.onHomePage())){
       const bannerText = await pm.onHomePage().getBannerText(banner.locator)
       await pm.onHomePage().switchToNextMarketingBanner(banner.locator)

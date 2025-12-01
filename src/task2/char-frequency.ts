@@ -14,7 +14,7 @@ type CharCount = {
  * Output format:
  *   "h:1, e:1, l:3, o:2, w:1, r:1, d:1"
  */
-function countChar(text: string): string[] {
+function countChar(text: string): string {
     const removedSpaces = text.replace(/\s/g, '')
     const result: CharCount[] = []
 
@@ -30,6 +30,8 @@ function countChar(text: string): string[] {
             })
         }
     }
-    return result.map(elementOfResult => `${elementOfResult.char}: ${elementOfResult.count}`)
+    return result
+        .map(elementOfResult => `${elementOfResult.char}: ${elementOfResult.count}`)
+        .join(', ')
 }
 console.log(countChar('I think its time to go to bed'))

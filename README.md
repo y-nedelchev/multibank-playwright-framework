@@ -1,4 +1,4 @@
-MultiBank UI Automation Suite
+## Task 1 - MultiBank UI Automation Suite
 
 Automated end-to-end UI tests for the MultiBank trading platform and related marketing pages, built with Playwright + TypeScript.
 
@@ -263,6 +263,36 @@ Use the existing style:
 Get the page via the page manager fixture
 
 Use test data via import * as data from '../test-data'
+
+
+
+## Task 2 – String Character Frequency
+
+This task implements a small TypeScript helper that counts how many times each
+character appears in a string and outputs the result in order of first appearance.
+
+### Location
+
+- Source: `src/task2/char-frequency.ts`
+- Optional test: `tests/task2/char-frequency.spec.ts`
+
+### Approach
+
+- Iterate over the string **once**, ignoring all whitespace characters.
+- Use an in-memory array of `{ char, count }` objects.
+- For each new character:
+  - If we already have it in the array, increment `count`
+  - Otherwise, push a new `{ char, count: 1 }` entry
+- At the end, map the list to `"<char>:<count>"` and join with `", "` to match the
+  required output format exactly.
+
+### Assumptions
+
+- **Case-insensitive**: the input string is converted to lowercase, so `H` and `h`
+  are treated as the same character.
+- **Whitespace is ignored**: spaces, tabs and newlines are removed before counting.
+- **All other characters are counted**: letters, digits and symbols are treated as
+  valid characters.
 
 Keep the test short and readable, pushing details into helpers.
 

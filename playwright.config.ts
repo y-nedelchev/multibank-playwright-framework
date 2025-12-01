@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test'
+import {defineConfig, devices} from '@playwright/test'
 
 export default defineConfig({
   timeout: 180000,
@@ -23,5 +23,26 @@ export default defineConfig({
       size: { width: 1920, height: 1080 },
     },
     viewport: { width: 1920, height: 1080 }
-  }
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome']
+      }
+    },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox']
+      }
+    },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari']
+      }
+    }
+  ]
 })

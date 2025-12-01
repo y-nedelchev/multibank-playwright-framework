@@ -138,8 +138,8 @@ test.describe.parallel('Content Validation', () => {
   })
 
   test('TC10 Verify About Us page renders all expected components with correct text', async ({ pm }) => {
+    // This test case follows another structure which i also recommend. In this case the POM knows what is where and what is true
     await pm.onHomePage().openAboutUsSubCategories(data.aboutUsSubCategoriesList[0])
-
     await pm.onWhyMultibankPage().assertHero(data.whyMultiBankHeroConfig)
     await pm.onWhyMultibankPage().assertValueCards(data.whyMultiBankCardsConfig)
     await pm.onWhyMultibankPage().assertStatsAndBenefits(

@@ -28,6 +28,7 @@ export class HomePage {
     readonly supportCategoriesButton: Locator
     readonly supportSubCategoriesButton: Locator
     readonly supportSubCategoriesDescription: Locator
+    readonly supportChatHeader: Locator
 
     // Marketing Banners
     readonly unlockThePowerBanner: Locator
@@ -68,6 +69,7 @@ export class HomePage {
         this.supportCategoriesButton = page.locator('#support-header-option-open-button')
         this.supportSubCategoriesButton = page.locator('.style_trade-link__jtY3X')
         this.supportSubCategoriesDescription = page.locator('.style_trade-link__jtY3X span')
+        this.supportChatHeader = page.frameLocator('#chat-widget').locator('#agent-bar')
 
         // Marketing Banners
         this.unlockThePowerBanner = page.locator('.slick-list [data-index="1"]')

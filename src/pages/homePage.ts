@@ -166,7 +166,7 @@ export class HomePage {
 
     async openSupportSubCategories(name: string): Promise<void>{
         await this.supportCategoriesButton.hover()
-        await this.supportCategoriesButton.filter({hasText: name}).click()
+        await this.supportSubCategoriesButton.filter({hasText: name}).click()
     }
 
     async getBannerText(banner: Locator): Promise<string> {

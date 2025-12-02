@@ -113,7 +113,7 @@ test.describe.parallel('Content Validation', () => {
       await pm.onHomePage().switchToNextMarketingBanner(banner.locator)
       expect(bannerText).toEqual(banner.expectedText)
       await pm.onHomePage().visitBannerRedirectionUrl(banner.locator, banner.expectedRedirectionText)
-      if(banner.expectedUrlPart.includes('24')){
+      if(banner.expectedText.includes('24')){
         await expect(pm.onHomePage().supportChatHeader).toBeVisible()
       }
       await expect(page).toHaveURL(new RegExp(banner.expectedUrlPart))

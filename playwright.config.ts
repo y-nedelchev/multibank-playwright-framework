@@ -5,7 +5,7 @@ export default defineConfig({
   expect: {
     timeout: 15000,
   },
-  workers: 2,
+  workers: 4,
   retries: process.env.CI ? 2 : 0,
   reporter: [
     ['list'],
@@ -29,19 +29,22 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome']
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 }
       }
     },
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox']
+        ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 }
       }
     },
     {
       name: 'webkit',
       use: {
-        ...devices['Desktop Safari']
+        ...devices['Desktop Safari'],
+        viewport: { width: 1920, height: 1080 }
       }
     }
   ]
